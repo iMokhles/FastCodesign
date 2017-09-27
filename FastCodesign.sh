@@ -84,6 +84,7 @@ setupVariables() {
 
     AppPath=$(set -- "$EXTRACTED_IPA_PATH/Payload/"*.app; echo "$1")
 
+    HOOKED_APP_BUNDLE_ID=$(/usr/libexec/PlistBuddy -c "Print CFBundleIdentifier"  "$AppPath/Info.plist")
     val=$(/usr/libexec/PlistBuddy -c "Print CFBundleDisplayName"  "$AppPath/Info.plist" 2>/dev/null)
     exitCode=$?
 
@@ -208,7 +209,7 @@ do
 
     makeBinaryExecutable "$HOOKED_EXE_PATH"
 
-    addNewEntries "$HOOKED_APP_NAME" "$HOOKED_APP_BUNDLE_NAME"
+    addNewEntries "$HOOKED_APP_NAME" "$HOOKED_APP_BUNDLE_ID"
 
     resignDYlibs
 
@@ -247,7 +248,7 @@ setupVariables
 
 makeBinaryExecutable "$HOOKED_EXE_PATH"
 
-addNewEntries "$HOOKED_APP_NAME-$dupNUM" "$HOOKED_APP_BUNDLE_NAME-$dupNUM"
+addNewEntries "$HOOKED_APP_NAME-$dupNUM" "$HOOKED_APP_BUNDLE_ID-$dupNUM"
 
 resignDYlibs
 
